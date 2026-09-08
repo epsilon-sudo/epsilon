@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Epsilon — Becoming</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      background: #050507;
+      overflow: hidden;
+      font-family: 'Inter', 'Segoe UI', sans-serif;
+      color: #fff;
+    }
+    canvas { display: block; }
+
+    /* ─── Texto 01%... becoming ─────────────────────────── */
+    .status-text {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      z-index: 10;
+      text-align: center;
+      color: #d4af37;
+      font-size: clamp(2.4rem, 7vw, 5rem);
+      font-weight: 300;
+      letter-spacing: 0.12em;
+      text-shadow: 0 0 40px rgba(212,175,55,0.25), 0 0 80px rgba(212,175,55,0.10);
+      animation: pulse 3.8s ease-in-out infinite;
+    }
+    .status-text .progress {
+      color: #fff;
+      font-weight: 600;
+    }
+    .status-text .dots {
+      color: #d4af37;
+      opacity: 0.55;
+      animation: blink 2.2s step-end infinite;
+    }
+    .status-text .word {
+      color: rgba(255,255,255,0.45);
+      font-weight: 300;
+      font-style: italic;
+      display: block;
+      margin-top: 0.15em;
+    }
+    @keyframes pulse {
+      0%, 100% { opacity: 1; text-shadow: 0 0 40px rgba(212,175,55,0.25), 0 0 80px rgba(212,175,55,0.10); }
+      50% { opacity: 0.85; text-shadow: 0 0 60px rgba(212,175,55,0.45), 0 0 120px rgba(212,175,55,0.18); }
+    }
+    @keyframes blink {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.15; }
+    }
+
+    /* ─── Botón More Info ──────────────────────────────────── */
+    .action-btn {
+      position: fixed;
+      bottom: 44px;
+      right: 44px;
+      padding: 14px 26px;
+      background: rgba(212,175,55,0.10);
+      border: 1px solid rgba(212,175,55,0.35);
+      border-radius: 4px;
+      color: #d4af37;
+      font-family: 'Inter', 'Segoe UI', sans-serif;
+      font-size: 13px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      cursor: pointer;
+      z-index: 30;
+      transition: all 0.25s ease;
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      pointer-events: auto;
+    }
+    .action-btn:hover {
+      background: rgba(212,175,55,0.20);
+      border-color: rgba(212,175,55,0.70);
+      box-shadow: 0 0 28px rgba(212,175,55,0.18);
+      transform: translateY(-1px);
+    }
+    .action-btn:active { transform: translateY(0); background: rgba(212,175,55,0.30); }
+
+    .loading {
+      position: fixed;
+      bottom: 40px;
+      left: 50%;
+      transform: translateX(-50%);
+      color: rgba(255,255,255,0.20);
+      font-size: 11px;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      z-index: 5;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="status-text">
+    <span class="progress">[01%</span><span class="dots">...</span><span class="progress">]</span>
+    <span class="word">becoming</span>
+  </div>
+
+  <div class="loading">sphere initializing —</div>
+
+  <button class="action-btn" id="moreInfoBtn">
+    More Info
+  </button>
+
+  <script type="importmap">
+  {
+    "imports": {
+      "three": "https://unpkg.com/three@0.160.0/build/three.module.js"
+    }
+  }
+  </script>
+
+  <script type="module">
+    import * as THREE from 'three';
+
+    // ─── Button → abre info.html ──────────────────────────
+    const moreInfoBtn = document.getElementById('moreInfoBtn');
+    moreInfoBtn.addEventListener('click', () => {
+      moreInfoBtn.style.transform = 'scale(0.97)';
+      setTimeout(() => moreInfoBtn.style.transform = '', 120);
+      moreInfoBtn.style.boxShadow = '0 0 50px rgba(212,175,55,0.5)';
+      setTimeout(() => moreInfoBtn.style.boxShadow = '', 600);
+      window.location.href = 'info.html';
+    });
+
+    // ─── Scene (simple & fast) ────────────────────────────────
+    const scene = new THREE.Scene();
+    scene.fog = new THREE.FogExp2(0x050507, 0.020);
+
+    const camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 500);
+    camera.position.set(0, 0, 10);
+
+    const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    renderer.setClearColor(0x000000, 0);
+    document.body.prepend(renderer.domElement);
+
+    function resize() {
+      const w = window.innerWidth, h = window.innerHeight;
+      renderer.setSize(w, h);
+      camera.aspect = w / h;
+      camera.updateProjectionMatrix();
+    }
+    window.addEventListener('resize', resize);
+
+    // ─── Sphere ────────────────────────────────────────────────
+    const sphereGeo = new THREE.SphereGeometry(3, 40, 40);
+    const sphereMat = new THREE.MeshPhysicalMaterial({
+      color: 0x0a0d18,
+      transparent: true,
+      opacity: 0.12,
+      roughness: 0.05,
+      metalness: 0.1,
+      side: THREE.DoubleSide,
+      envMapIntensity: 0.5,
+    });
+    const sphere = new THREE.Mesh(sphereGeo, sphereMat);
+    scene.add(sphere);
+
+    const wireMat = new THREE.MeshBasicMaterial({
+      color: 0xd4af37,
+      wireframe: true,
+      transparent: true,
+      opacity: 0.07,
+    });
+    const wireSphere = new THREE.Mesh(sphereGeo.clone(), wireMat);
+    wireSphere.scale.set(1.005, 1.005, 1.005);
+    scene.add(wireSphere);
+
+    const glowGeo = new THREE.SphereGeometry(2.6, 24, 24);
+    const glowMat = new THREE.MeshBasicMaterial({
+      color: 0x0c0f16,
+      transparent: true,
+      opacity: 0.35,
+    });
+    const glow = new THREE.Mesh(glowGeo, glowMat);
+    scene.add(glow);
+
+    // ─── Particles (less is more for speed) ────────────────────
+    const PARTICLE_COUNT = 3000;
+    const positions = new Float32Array(PARTICLE_COUNT * 3);
+    const colors = new Float32Array(PARTICLE_COUNT * 3);
+    const sizes = new Float32Array(PARTICLE_COUNT);
+    const phases = new Float32Array(PARTICLE_COUNT);
+
+    const colGold = new THREE.Color(0xd4af37);
+    const colBlue = new THREE.Color(0x4a8fe7);
+    const colWhite = new THREE.Color(0xffffff);
+    const colDim = new THREE.Color(0x1a2540);
+
+    for (let i = 0; i < PARTICLE_COUNT; i++) {
+      const theta = Math.random() * Math.PI * 2;
+      const phi = Math.acos(2 * Math.random() - 1);
+      const r = 1.2 + Math.random() * 2.8;
+
+      positions[i * 3]     = r * Math.sin(phi) * Math.cos(theta);
+      positions[i * 3 + 1] = r * Math.sin(phi) * Math.sin(theta);
+      positions[i * 3 + 2] = r * Math.cos(phi);
+
+      const rand = Math.random();
+      if (rand < 0.35) {
+        const c = colGold.clone().lerp(colBlue, Math.random());
+        colors[i*3] = c.r; colors[i*3+1] = c.g; colors[i*3+2] = c.b;
+      } else if (rand < 0.50) {
+        colors[i*3] = colWhite.r; colors[i*3+1] = colWhite.g; colors[i*3+2] = colWhite.b;
+      } else {
+        const c = colDim.clone().lerp(colBlue, Math.random() * 0.5);
+        colors[i*3] = c.r; colors[i*3+1] = c.g; colors[i*3+2] = c.b;
+      }
+
+      sizes[i] = 0.4 + Math.random() * 2.0;
+      phases[i] = Math.random() * Math.PI * 2;
+    }
+
+    const geo = new THREE.BufferGeometry();
+    geo.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+    geo.setAttribute('color', new THREE.BufferAttribute(colors, 3));
+    geo.setAttribute('size', new THREE.BufferAttribute(sizes, 1));
+
+    const mat = new THREE.PointsMaterial({
+      size: 0.07,
+      vertexColors: true,
+      transparent: true,
+      opacity: 0.80,
+      blending: THREE.AdditiveBlending,
+      depthWrite: false,
+      sizeAttenuation: true,
+    });
+
+    const particles = new THREE.Points(geo, mat);
+    scene.add(particles);
+
+    // ─── Core glow ──────────────────────────────────────────────
+    const coreMat = new THREE.MeshBasicMaterial({
+      color: 0xd4af37,
+      transparent: true,
+      opacity: 0.6,
+    });
+    const core = new THREE.Mesh(new THREE.SphereGeometry(0.55, 16, 16), coreMat);
+    scene.add(core);
+
+    const coreGlowMat = new THREE.MeshBasicMaterial({
+      color: 0xd4af37,
+      transparent: true,
+      opacity: 0.12,
+    });
+    const coreGlow = new THREE.Mesh(new THREE.SphereGeometry(0.85, 10, 10), coreGlowMat);
+    scene.add(coreGlow);
+
+    // ─── Rings ──────────────────────────────────────────────────
+    const ringGeo = new THREE.RingGeometry(3.3, 3.5, 48);
+    const ringMat = new THREE.MeshBasicMaterial({
+      color: 0xd4af37,
+      transparent: true,
+      opacity: 0.06,
+      side: THREE.DoubleSide,
+      depthWrite: false,
+    });
+    const ring = new THREE.Mesh(ringGeo, ringMat);
+    ring.rotation.x = Math.PI / 3;
+    scene.add(ring);
+
+    const ring2 = new THREE.Mesh(
+      new THREE.RingGeometry(3.6, 3.75, 48),
+      new THREE.MeshBasicMaterial({ color: 0x4a8fe7, transparent: true, opacity: 0.04, side: THREE.DoubleSide, depthWrite: false })
+    );
+    ring2.rotation.x = -Math.PI / 4;
+    ring2.rotation.z = Math.PI / 6;
+    scene.add(ring2);
+
+    // ─── Stars ──────────────────────────────────────────────────
+    const starCount = 600;
+    const starPos = new Float32Array(starCount * 3);
+    for (let i = 0; i < starCount; i++) {
+      starPos[i*3]     = (Math.random() - 0.5) * 80;
+      starPos[i*3 + 1] = (Math.random() - 0.5) * 80;
+      starPos[i*3 + 2] = (Math.random() - 0.5) * 80 - 20;
+    }
+    const starGeo2 = new THREE.BufferGeometry();
+    starGeo2.setAttribute('position', new THREE.BufferAttribute(starPos, 3));
+    const starMat2 = new THREE.PointsMaterial({
+      color: 0xffffff,
+      size: 0.04,
+      transparent: true,
+      opacity: 0.35,
+      sizeAttenuation: true,
+    });
+    const stars2 = new THREE.Points(starGeo2, starMat2);
+    scene.add(stars2);
+
+    // ─── Animation loop ─────────────────────────────────────────
+    let time = 0;
+
+    function animate() {
+      requestAnimationFrame(animate);
+      time += 0.005;
+
+      sphere.rotation.x = Math.sin(time * 0.3) * 0.05;
+      sphere.rotation.y += 0.0015;
+      wireSphere.rotation.copy(sphere.rotation);
+
+      const pos = particles.geometry.attributes.position.array;
+      for (let i = 0; i < PARTICLE_COUNT; i++) {
+        const i3 = i * 3;
+        const x = pos[i3], y = pos[i3+1], z = pos[i3+2];
+        const dist = Math.sqrt(x*x + y*y + z*z);
+        if (dist > 5.5) {
+          const s = 4.0 / dist;
+          pos[i3] *= s; pos[i3+1] *= s; pos[i3+2] *= s;
+        }
+        if (dist < 0.6) {
+          const s = 0.8 / dist;
+          pos[i3] *= s; pos[i3+1] *= s; pos[i3+2] *= s;
+        }
+      }
+      particles.geometry.attributes.position.needsUpdate = true;
+
+      const pulse = 1 + Math.sin(time * 2) * 0.08;
+      core.scale.set(pulse, pulse, pulse);
+      coreGlow.scale.set(pulse * 1.5, pulse * 1.5, pulse * 1.5);
+      coreGlow.material.opacity = 0.08 + Math.sin(time * 2) * 0.04;
+
+      ring.rotation.z += 0.002;
+      ring2.rotation.x += 0.001;
+      ring2.rotation.y += 0.0015;
+
+      sphere.material.opacity = 0.12 + Math.sin(time * 0.5) * 0.03;
+      wireSphere.material.opacity = 0.07 + Math.sin(time * 0.7) * 0.02;
+
+      stars2.rotation.y += 0.0002;
+
+      renderer.render(scene, camera);
+    }
+
+    animate();
+  </script>
+</body>
+</html>
