@@ -3,14 +3,14 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Epsilon Blog — Documenting the process of building from zero</title>
-  <meta name="description" content="Epsilon Blog: real documentation of the process of building a one-person company from scratch, no team, no investors, connecting the digital with the physical.">
-  <meta property="og:title" content="Epsilon Blog">
-  <meta property="og:description" content="Real documentation of the process of building a one-person company from zero.">
-  <meta property="og:type" content="website">
-  <meta property="twitter:card" content="summary">
-  <link rel="canonical" href="https://epsilon-sudo.github.io/epsilon/blog/">
-  <link rel="alternate" type="application/rss+xml" title="Epsilon Blog" href="feed.xml">
+  <title>What is Epsilon? — Epsilon Blog</title>
+  <meta name="description" content="Epsilon is a faceless personal brand that documents the construction of a one-person company from zero, no team, no investors, connecting the digital with the physical.">
+  <meta property="og:title" content="What is Epsilon?">
+  <meta property="og:description" content="Epsilon is a faceless personal brand that documents the construction of a one-person company from zero.">
+  <meta property="og:type" content="article">
+  <meta name="twitter:card" content="summary">
+  <link rel="canonical" href="https://epsilon-sudo.github.io/epsilon/blog/01-what-is-epsilon.html">
+  <link rel="alternate" type="application/rss+xml" title="Epsilon Blog" href="../feed.xml">
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body {
@@ -82,16 +82,10 @@
       border-top: 1px solid rgba(255,255,255,0.08);
       margin: 2rem 0;
     }
-    .empty-state {
-      text-align: center;
-      padding: 4rem 2rem;
-      color: rgba(255,255,255,0.3);
-    }
-    .empty-state h3 {
-      font-size: 1.2rem;
-      color: rgba(255,255,255,0.5);
-      margin-bottom: 0.8rem;
-    }
+    .post-body ul { margin: 0.5rem 0 1.2rem 1.5rem; }
+    .post-body li { margin-bottom: 0.4rem; color: rgba(255,255,255,0.75); }
+    .post-body strong { color: rgba(255,255,255,0.95); }
+    .post-body em { color: rgba(212,175,55,0.8); }
     .feed-link {
       display: inline-flex;
       align-items: center;
@@ -108,13 +102,18 @@
       text-decoration: none;
     }
     .feed-link:hover { background: rgba(212,175,55,0.18); border-color: #d4af37; }
+    .footer {
+      margin-top: 3rem;
+      text-align: center;
+      color: rgba(255,255,255,0.2);
+    }
   </style>
 </head>
 <body>
 
   <div class="container">
     <div class="logo">Epsilon · Blog</div>
-    <a class="back-link" href="../index.html">← Back to the landing</a>
+    <a class="back-link" href="../index.html">← Back to the blog</a>
 
     <article class="post">
       <div class="post-meta">Published on 2026-09-08 · 2 min read</div>
@@ -133,15 +132,15 @@
 
         <p><strong>The principles guiding this:</strong></p>
 
-        <p>
-          <strong>No filters</strong> — I don't present a curated version. I show what happens, including errors and doubts.<br>
-          <strong>No smoke</strong> — what I say is what I do or what I think. I don't promise what I can't deliver.<br>
-          <strong>In public</strong> — what I build, I show. Transparency is part of the process.<br>
-          <strong>Human, conscious</strong> — I'm a software engineer, but I'm also in the process. I'm not code.<br>
-          <strong>Interact with people</strong> — this is not a monologue. Epsilon seeks real connection.<br>
-          <strong>Useful, not performative</strong> — if something doesn't work, I don't show it as if it did.<br>
-          <strong>Scalable, not urgent</strong> — this is long term. It's not a speed race.
-        </p>
+        <ul>
+          <li><strong>No filters</strong> — I don't present a curated version. I show what happens, including errors and doubts.</li>
+          <li><strong>No smoke</strong> — what I say is what I do or what I think. I don't promise what I can't deliver.</li>
+          <li><strong>In public</strong> — what I build, I show. Transparency is part of the process.</li>
+          <li><strong>Human, conscious</strong> — I'm a software engineer, but I'm also in the process. I'm not code.</li>
+          <li><strong>Interact with people</strong> — this is not a monologue. Epsilon seeks real connection.</li>
+          <li><strong>Useful, not performative</strong> — if something doesn't work, I don't show it as if it did.</li>
+          <li><strong>Scalable, not urgent</strong> — this is long term. It's not a speed race.</li>
+        </ul>
 
         <hr>
 
@@ -165,7 +164,7 @@
       </div>
     </article>
 
-    <a class="feed-link" href="feed.xml">
+    <a class="feed-link" href="../feed.xml">
       <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
         <path d="M4 11a9 9 0 0 1 9 9"/>
         <path d="M4 4a16 16 0 0 1 16 16"/>
@@ -174,7 +173,7 @@
       RSS Feed
     </a>
 
-    <div style="margin-top: 3rem; text-align: center; color: rgba(255,255,255,0.2);">
+    <div class="footer">
       <span>Epsilon · under construction</span>
     </div>
   </div>
