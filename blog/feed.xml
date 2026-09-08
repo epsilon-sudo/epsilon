@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Blog de Epsilon</title>
+    <link>https://epsilon.tld/blog/</link>
+    <description>Documentación del proceso de construir una empresa de 1 persona desde cero, sin equipo, sin inversores, conectando lo digital con lo físico.</description>
+    <language>es-AR</language>
+    <lastBuildDate>Mon, 08 Sep 2026 00:00:00 +0000</lastBuildDate>
+    <atom:link href="https://epsilon.tld/blog/feed.xml" rel="self" type="application/rss+xml"/>
+    <item>
+      <title>¿Qué es Epsilon?</title>
+      <link>https://epsilon.tld/blog/01-que-es-epsilon.html</link>
+      <guid isPermaLink="true">https://epsilon.tld/blog/01-que-es-epsilon.html</guid>
+      <description>Epsilon es una marca personal faceless que documenta la construcción de una empresa de 1 persona desde cero, sin equipo, sin inversores, conectando lo digital con lo físico.</description>
+      <pubDate>Mon, 08 Sep 2026 00:00:00 +0000</pubDate>
+      <category>concept</category>
+    </item>
+  </channel>
+</rss>
